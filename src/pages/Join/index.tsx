@@ -14,7 +14,7 @@ export const JoinPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleRegister = async () => {
+  const registerUser = async () => {
     if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
@@ -67,7 +67,7 @@ export const JoinPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleRegister}>회원가입</Button>
+        <Button onClick={registerUser}>회원가입</Button>
         <br />
         <Center>
           <Link to="/login">

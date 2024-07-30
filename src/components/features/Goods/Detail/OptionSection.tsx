@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAddWish } from '@/api/hooks/useAddWishList';
@@ -20,12 +20,20 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: options } = useGetProductOptions({ productId });
 
   const [countAsString, setCountAsString] = useState('1');
-  const totalPrice = useMemo(() => detail.price * Number(countAsString), [detail, countAsString]);
+  const [price, setPrice] = useState(0);
+
+  useEffect(() => {
+    if (detail) {
+      setPrice(detail.price);
+    }
+  }, [detail]);
+
+  const totalPrice = useMemo(() => price * Number(countAsString), [price, countAsString]);
   const addWish = useAddWish();
   const navigate = useNavigate();
   const authInfo = useAuth();
 
-  const handleAddToWishlist = () => {
+  const addToWishlist = () => {
     const token = authInfo?.token;
 
     if (!token) {
@@ -73,7 +81,7 @@ export const OptionSection = ({ productId }: Props) => {
         <Button theme="black" size="large" onClick={handleClick}>
           나에게 선물하기
         </Button>
-        <Button theme="outline" size="large" onClick={handleAddToWishlist}>
+        <Button theme="outline" size="large" onClick={addToWishlist}>
           관심 등록
         </Button>
       </BottomWrapper>
